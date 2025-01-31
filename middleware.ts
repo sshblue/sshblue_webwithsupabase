@@ -1,71 +1,67 @@
-import { type NextRequest, NextResponse } from "next/server";
-import { updateSession } from "@/utils/supabase/middleware";
-import { createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
 
 export async function middleware(request: NextRequest) {
-  const res = await updateSession(request);
+  try {
+    // Récupérer les tokens des cookies
+    const accessToken = request.cookies.get('sb-access-token')?.value
+    const refreshToken = request.cookies.get('sb-refresh-token')?.value
 
-  // Check if the request is for the admin dashboard
-  if (request.nextUrl.pathname.startsWith('/admin')) {
-    try {
-      const cookieStore = cookies();
-      const supabase = createServerClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-        {
-          cookies: {
-            getAll() {
-              return cookieStore.getAll();
-            },
-            setAll(cookiesToSet) {
-              try {
-                cookiesToSet.forEach(({ name, value, options }) => {
-                  cookieStore.set(name, value, options);
-                });
-              } catch (error) {
-                // The `set` method was called from a Server Component.
-                // This can be ignored if you have middleware refreshing
-                // user sessions.
-              }
-            },
-          },
-        }
-      );
-
-      const { data: { session } } = await supabase.auth.getSession();
-
-      if (!session) {
-        return NextResponse.redirect(new URL('/sign-in', request.url));
+    // Pour les routes protégées, vérifier l'authentification
+    if (request.nextUrl.pathname.startsWith('/protected')) {
+      if (!accessToken || !refreshToken) {
+        return NextResponse.redirect(new URL('/sign-in', request.url))
       }
 
-      const { data: userRole } = await supabase
+      const { data: { user }, error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      })
+
+      if (error || !user) {
+        return NextResponse.redirect(new URL('/sign-in', request.url))
+      }
+    }
+
+    // Pour les routes admin, vérifier le rôle
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      if (!accessToken || !refreshToken) {
+        return NextResponse.redirect(new URL('/sign-in', request.url))
+      }
+
+      const { data: { user }, error: sessionError } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken
+      })
+
+      if (sessionError || !user) {
+        return NextResponse.redirect(new URL('/sign-in', request.url))
+      }
+
+      const { data: roleData, error: roleError } = await supabase
         .from('user_roles')
         .select('role')
-        .eq('id', session.user.id)
-        .single();
+        .eq('id', user.id)
+        .single()
 
-      if (!userRole || userRole.role !== 'admin') {
-        return NextResponse.redirect(new URL('/', request.url));
+      if (roleError || !roleData || roleData.role !== 'admin') {
+        return NextResponse.redirect(new URL('/', request.url))
       }
-    } catch (error) {
-      console.error('Error in admin middleware:', error);
-      return NextResponse.redirect(new URL('/sign-in', request.url));
     }
-  }
 
-  return res;
+    return NextResponse.next()
+  } catch (error) {
+    console.error('Middleware error:', error)
+    return NextResponse.redirect(new URL('/sign-in', request.url))
+  }
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public folder
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
-};
+  matcher: ['/protected/:path*', '/admin/:path*']
+}

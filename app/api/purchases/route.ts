@@ -1,32 +1,47 @@
-import { createClient } from '@/utils/supabase/server'
+import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
   try {
-    const cookieStore = cookies()
-    const supabase = await createClient()
+    const cookieStore = await cookies()
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          async get(name: string) {
+            const cookie = await cookieStore.get(name)
+            return cookie?.value
+          },
+          async set(name: string, value: string, options: any) {
+            try {
+              await cookieStore.set({ name, value, ...options })
+            } catch (error) {
+              // Gérer silencieusement les erreurs de cookie
+              console.error('Erreur lors de la définition du cookie:', error)
+            }
+          },
+          async remove(name: string, options: any) {
+            try {
+              await cookieStore.set({ name, value: '', ...options, maxAge: 0 })
+            } catch (error) {
+              // Gérer silencieusement les erreurs de cookie
+              console.error('Erreur lors de la suppression du cookie:', error)
+            }
+          },
+        },
+      }
+    )
 
-    if (authError) {
-      console.error("Erreur d'authentification:", authError)
-      return NextResponse.json(
-        { error: "Erreur d'authentification" },
-        { status: 401 }
-      )
-    }
+    const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
-      return NextResponse.json(
-        { error: "Vous devez être connecté pour commander un serveur" },
-        { status: 401 }
-      )
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    const json = await req.json()
-    console.log("Données reçues:", json)
-
+    const formData = await request.json()
     const {
       productId,
       product,
@@ -42,7 +57,7 @@ export async function POST(req: Request) {
       ramPrice = 0,
       storagePrice = 0,
       totalPrice
-    } = json
+    } = formData
 
     if (!productId || !serverName || !location || !os || !product) {
       console.error("Données manquantes:", { productId, serverName, location, os, product })

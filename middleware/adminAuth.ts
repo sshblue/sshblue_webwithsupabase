@@ -1,42 +1,47 @@
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
+import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { createClient } from "@supabase/supabase-js"
 
-export async function adminMiddleware(request: NextRequest) {
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+export async function adminAuth(request: NextRequest) {
   try {
-    const cookieStore = cookies()
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          get(name: string) {
-            return cookieStore.get(name)?.value
-          },
-        },
-      }
-    )
+    // Récupérer le token d'accès du cookie
+    const accessToken = request.cookies.get('sb-access-token')?.value
+    const refreshToken = request.cookies.get('sb-refresh-token')?.value
 
-    const { data: { session } } = await supabase.auth.getSession()
-
-    if (!session) {
+    if (!accessToken || !refreshToken) {
       return NextResponse.redirect(new URL('/sign-in', request.url))
     }
 
-    const { data: userRole } = await supabase
+    // Définir la session avec les tokens
+    const { data: { user }, error: sessionError } = await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken
+    })
+
+    if (sessionError || !user) {
+      return NextResponse.redirect(new URL('/sign-in', request.url))
+    }
+
+    // Vérifier le rôle de l'utilisateur
+    const { data: roleData, error: roleError } = await supabase
       .from('user_roles')
       .select('role')
-      .eq('id', session.user.id)
+      .eq('id', user.id)
       .single()
 
-    if (!userRole || userRole.role !== 'admin') {
+    if (roleError || !roleData || roleData.role !== 'admin') {
       return NextResponse.redirect(new URL('/', request.url))
     }
 
+    // Si tout est OK, permettre l'accès
     return NextResponse.next()
   } catch (error) {
-    console.error('Admin middleware error:', error)
-    return NextResponse.redirect(new URL('/', request.url))
+    console.error('Erreur dans adminAuth:', error)
+    return NextResponse.redirect(new URL('/sign-in', request.url))
   }
 }

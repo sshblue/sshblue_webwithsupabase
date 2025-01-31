@@ -5,8 +5,7 @@ import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { InputWithIcon } from "@/components/ui/input-with-icon"
+import { SearchInput } from "@/components/ui/search-input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   Table,
@@ -207,9 +206,9 @@ export default function ProtectedPage() {
 
         {/* Filters */}
         <div className="flex gap-4 flex-wrap">
-          <div className="flex-1">
-            <InputWithIcon
-              placeholder="Rechercher un serveur..."
+          <div className="flex-1 min-w-[200px]">
+            <SearchInput
+              placeholder="Rechercher..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full"
