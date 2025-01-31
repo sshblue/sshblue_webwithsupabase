@@ -116,6 +116,30 @@ export default function AdminDashboard() {
     }
   }
 
+  const updateUserRole = async (userId: string, newRole: 'user' | 'admin') => {
+    try {
+      const { error } = await supabase
+        .from('user_roles')
+        .update({ role: newRole })
+        .eq('id', userId)
+
+      if (error) throw error
+
+      toast({
+        title: "Success",
+        description: "User role updated successfully",
+      })
+      
+      fetchData()
+    } catch (error) {
+      console.error('Error updating role:', error)
+      toast({
+        title: "Error",
+        description: "Failed to update user role",
+      })
+    }
+  }
+
   if (loading) {
     return (
       <div className="container py-20 text-center">
@@ -216,10 +240,6 @@ export default function AdminDashboard() {
           <Card className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold">User Management</h2>
-              <Input
-                placeholder="Search users..."
-                className="max-w-xs"
-              />
             </div>
 
             <Table>
@@ -235,7 +255,11 @@ export default function AdminDashboard() {
                 {users.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell>{user.users.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
+                    <TableCell>
+                      <Badge variant={user.role === 'admin' ? 'destructive' : 'default'}>
+                        {user.role}
+                      </Badge>
+                    </TableCell>
                     <TableCell>
                       {new Date(user.users.created_at).toLocaleDateString()}
                     </TableCell>
@@ -243,10 +267,7 @@ export default function AdminDashboard() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => updateUserRole(
-                          user.id,
-                          user.role === 'admin' ? 'user' : 'admin'
-                        )}
+                        onClick={() => updateUserRole(user.id, user.role === 'admin' ? 'user' : 'admin')}
                       >
                         Make {user.role === 'admin' ? 'User' : 'Admin'}
                       </Button>
@@ -262,30 +283,30 @@ export default function AdminDashboard() {
           <Card className="p-6">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-semibold">Server Management</h2>
-              <Input
-                placeholder="Search servers..."
-                className="max-w-xs"
-              />
             </div>
 
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Server</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Status</TableHead>
-                  <TableHead>Owner</TableHead>
-                  <TableHead>Price</TableHead>
+                  <TableHead>Created At</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {servers.map((server) => (
                   <TableRow key={server.id}>
-                    <TableCell>{server.server_name}</TableCell>
+                    <TableCell>{server.products.name}</TableCell>
                     <TableCell>{server.products.server_type}</TableCell>
-                    <TableCell>{server.status}</TableCell>
-                    <TableCell>{server.user_id}</TableCell>
-                    <TableCell>${server.total_price}/month</TableCell>
+                    <TableCell>
+                      <Badge variant={server.status === 'active' ? 'default' : 'secondary'}>
+                        {server.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(server.created_at).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -294,27 +315,28 @@ export default function AdminDashboard() {
         </TabsContent>
 
         <TabsContent value="stats" className="mt-6">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <Card className="p-6">
-              <h3 className="font-semibold text-muted-foreground mb-2">
-                Total Users
-              </h3>
-              <p className="text-3xl font-bold">{users.length}</p>
+              <h3 className="text-lg font-medium">Total Users</h3>
+              <p className="text-3xl font-bold mt-2">{users.length}</p>
             </Card>
 
             <Card className="p-6">
-              <h3 className="font-semibold text-muted-foreground mb-2">
-                Total Servers
-              </h3>
-              <p className="text-3xl font-bold">{servers.length}</p>
+              <h3 className="text-lg font-medium">Total Products</h3>
+              <p className="text-3xl font-bold mt-2">{products.length}</p>
             </Card>
 
             <Card className="p-6">
-              <h3 className="font-semibold text-muted-foreground mb-2">
-                Monthly Revenue
-              </h3>
-              <p className="text-3xl font-bold">
-                ${servers.reduce((acc, s) => acc + s.total_price, 0)}/month
+              <h3 className="text-lg font-medium">Active Servers</h3>
+              <p className="text-3xl font-bold mt-2">
+                {servers.filter(s => s.status === 'active').length}
+              </p>
+            </Card>
+
+            <Card className="p-6">
+              <h3 className="text-lg font-medium">Admin Users</h3>
+              <p className="text-3xl font-bold mt-2">
+                {users.filter(u => u.role === 'admin').length}
               </p>
             </Card>
           </div>
@@ -329,28 +351,4 @@ export default function AdminDashboard() {
       />
     </div>
   )
-}
-
-const updateUserRole = async (userId: string, newRole: 'user' | 'admin') => {
-  try {
-    const { error } = await supabase
-      .from('user_roles')
-      .update({ role: newRole })
-      .eq('id', userId)
-
-    if (error) throw error
-
-    toast({
-      title: "Success",
-      description: "User role updated successfully",
-    })
-    
-    fetchData()
-  } catch (error) {
-    console.error('Error updating role:', error)
-    toast({
-      title: "Error",
-      description: "Failed to update user role",
-    })
-  }
 }
