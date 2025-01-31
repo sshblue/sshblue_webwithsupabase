@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Euro, Monitor } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import { SolanaPayment } from './solana-payment'
 
 interface ServerConfiguratorProps {
   isOpen: boolean
@@ -32,8 +33,10 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
   })
 
   const [step, setStep] = useState(1)
-  const totalSteps = 3
+  const totalSteps = 4
   const [submitting, setSubmitting] = useState(false)
+  const [isPaid, setIsPaid] = useState(false)
+  const [paymentComplete, setPaymentComplete] = useState(false)
 
   // Base price and additional costs
   const basePrice = product.price_per_month
@@ -96,14 +99,14 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
         return (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label>Server name</Label>
+              <Label>Server Name</Label>
               <Input
                 placeholder="my-server-01"
                 value={config.name}
                 onChange={(e) => setConfig({ ...config, name: e.target.value })}
               />
               <p className="text-sm text-muted-foreground">
-                Name must contain only letters, numbers, and hyphens
+                The name must contain only letters, numbers, and hyphens
               </p>
             </div>
             <div className="space-y-2">
@@ -230,7 +233,7 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
                 <div className="space-y-0.5">
                   <Label>24/7 Support</Label>
                   <p className="text-sm text-muted-foreground">
-                    Priority technical assistance
+                    Priority technical support
                   </p>
                 </div>
                 <Switch
@@ -243,6 +246,13 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
               )}
             </div>
           </div>
+        )
+      case 4:
+        return (
+          <SolanaPayment 
+            montantUSD={totalPrice} 
+            onPaymentComplete={() => setPaymentComplete(true)} 
+          />
         )
     }
   }
@@ -288,16 +298,16 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
 
       toast({
         title: "Order placed!",
-        description: "Your server is being configured. You will be notified by email once it's ready.",
+        description: "Your server is being created. You will be notified by email when it's ready.",
       })
 
       router.push("/user_dashboard")
       onClose()
     } catch (error: any) {
-      console.error("Error during order:", error)
+      console.error("Error placing order:", error)
       toast({
         title: "Error",
-        description: error.message || "An error occurred during the order",
+        description: error.message || "An error occurred while placing the order",
         variant: "destructive",
       })
     } finally {
@@ -331,7 +341,14 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
         </DialogHeader>
 
         <div className="py-6">
-          {renderStep()}
+          {step === totalSteps ? (
+            <SolanaPayment 
+              montantUSD={totalPrice} 
+              onPaymentComplete={() => setPaymentComplete(true)} 
+            />
+          ) : (
+            renderStep()
+          )}
         </div>
 
         <div className="flex items-center justify-between pt-4 border-t">
@@ -347,18 +364,9 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
             )}
             <Button 
               onClick={handleNext} 
-              disabled={!canContinue() || submitting}
+              disabled={!canContinue() || (step === totalSteps && !paymentComplete)}
             >
-              {submitting ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-r-transparent mr-2" />
-                  Processing...
-                </>
-              ) : step === totalSteps ? (
-                "Order Now"
-              ) : (
-                "Next"
-              )}
+              {step === totalSteps ? "Place Order" : "Next"}
             </Button>
           </div>
         </div>

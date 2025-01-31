@@ -21,15 +21,15 @@ const profileFormSchema = z.object({
   username: z
     .string()
     .min(2, {
-      message: "Le nom d'utilisateur doit contenir au moins 2 caractères.",
+      message: "The username must contain at least 2 characters.",
     })
     .max(30, {
-      message: "Le nom d'utilisateur ne doit pas dépasser 30 caractères.",
+      message: "The username must not exceed 30 characters.",
     }),
   email: z
     .string()
-    .min(1, { message: "L'email est requis." })
-    .email("Adresse email invalide."),
+    .min(1, { message: "Email is required." })
+    .email("Invalid email address."),
   company: z.string().optional(),
   phone: z.string().optional(),
 })
@@ -65,9 +65,9 @@ export function ProfileForm({ user }: ProfileFormProps) {
 
       if (error) throw error
 
-      toast.success("Profil mis à jour avec succès")
+      toast.success("Profile updated successfully")
     } catch (error) {
-      toast.error("Erreur lors de la mise à jour du profil")
+      toast.error("Error updating profile")
     }
   }
 
@@ -79,12 +79,12 @@ export function ProfileForm({ user }: ProfileFormProps) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nom d'utilisateur</FormLabel>
+              <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
               <FormDescription>
-                C'est votre nom public. Il peut être modifié à tout moment.
+                This is your public name. It can be changed at any time.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -97,10 +97,10 @@ export function ProfileForm({ user }: ProfileFormProps) {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@exemple.fr" type="email" {...field} />
+                <Input placeholder="john@example.com" type="email" {...field} />
               </FormControl>
               <FormDescription>
-                Votre adresse email principale pour les notifications.
+                Your primary email address for notifications.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -111,12 +111,12 @@ export function ProfileForm({ user }: ProfileFormProps) {
           name="company"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Entreprise</FormLabel>
+              <FormLabel>Company</FormLabel>
               <FormControl>
-                <Input placeholder="Votre entreprise" {...field} />
+                <Input placeholder="Your company" {...field} />
               </FormControl>
               <FormDescription>
-                Optionnel - Le nom de votre entreprise pour la facturation.
+                Optional - The name of your company for billing.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -127,18 +127,18 @@ export function ProfileForm({ user }: ProfileFormProps) {
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Téléphone</FormLabel>
+              <FormLabel>Phone</FormLabel>
               <FormControl>
                 <Input placeholder="+33 6 12 34 56 78" {...field} />
               </FormControl>
               <FormDescription>
-                Optionnel - Pour vous contacter en cas d'urgence.
+                Optional - For contacting you in case of an emergency.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Mettre à jour le profil</Button>
+        <Button type="submit">Update profile</Button>
       </form>
     </Form>
   )

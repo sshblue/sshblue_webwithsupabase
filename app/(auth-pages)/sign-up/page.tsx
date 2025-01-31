@@ -4,9 +4,7 @@ import { SubmitButton } from "@/components/submit-button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Github, Mail } from "lucide-react"
 
 export default async function SignUp(props: { searchParams: Promise<Message> }) {
   const searchParams = await props.searchParams
@@ -20,27 +18,7 @@ export default async function SignUp(props: { searchParams: Promise<Message> }) 
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <Button variant="outline" className="w-full">
-                <Github className="mr-2 h-4 w-4" />
-                Github
-              </Button>
-              <Button variant="outline" className="w-full">
-                <Mail className="mr-2 h-4 w-4" />
-                Google
-              </Button>
-            </div>
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                  Or continue with
-                </span>
-              </div>
-            </div>
+          <div className="grid gap-6">
             <form className="flex flex-col gap-4">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email">Email</Label>
@@ -89,6 +67,16 @@ export default async function SignUp(props: { searchParams: Promise<Message> }) 
               </SubmitButton>
               <FormMessage message={searchParams} />
             </form>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col items-center gap-4 text-sm text-muted-foreground">
