@@ -46,29 +46,29 @@ export function UserCard({ email, createdAt }: UserCardProps) {
         <div className="text-sm text-left hidden md:block">
           <div className="font-medium">{email}</div>
           <div className="text-xs text-muted-foreground">
-            Membre depuis le {new Date(createdAt).toLocaleDateString()}
+            Member since {new Date(createdAt).toLocaleDateString()}
           </div>
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>Mon Compte</DropdownMenuLabel>
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <Link href="/profile">
           <DropdownMenuItem className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
-            <span>Profil</span>
+            <span>Profile</span>
           </DropdownMenuItem>
         </Link>
         <Link href="/settings">
           <DropdownMenuItem className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
-            <span>Paramètres</span>
+            <span>Settings</span>
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="text-destructive cursor-pointer" onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Se déconnecter</span>
+          <span>Sign out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

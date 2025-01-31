@@ -25,7 +25,7 @@ export default async function ProfilePage() {
     .join("")
     .toUpperCase()
 
-  const createdAt = new Date(user.created_at).toLocaleDateString("fr-FR", {
+  const createdAt = new Date(user.created_at).toLocaleDateString("en-US", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -41,9 +41,9 @@ export default async function ProfilePage() {
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-3xl font-bold">Profil Utilisateur</h1>
+            <h1 className="text-3xl font-bold">User Profile</h1>
             <p className="text-muted-foreground">
-              Membre depuis le {createdAt}
+              Member since {createdAt}
             </p>
           </div>
         </div>
@@ -51,9 +51,9 @@ export default async function ProfilePage() {
         <div className="grid gap-6">
           <Card>
             <CardHeader>
-              <CardTitle>Informations personnelles</CardTitle>
+              <CardTitle>Personal Information</CardTitle>
               <CardDescription>
-                Gérez vos informations personnelles et vos préférences de compte.
+                Manage your personal information and account preferences.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -63,28 +63,28 @@ export default async function ProfilePage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Statistiques du compte</CardTitle>
+              <CardTitle>Account Statistics</CardTitle>
               <CardDescription>
-                Aperçu de votre utilisation des services SSHBlue.
+                Overview of your SSHBlue services usage.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                 <div className="rounded-lg border p-3">
                   <div className="text-sm font-medium text-muted-foreground">
-                    Serveurs actifs
+                    Active Servers
                   </div>
                   <div className="text-2xl font-bold">0</div>
                 </div>
                 <div className="rounded-lg border p-3">
                   <div className="text-sm font-medium text-muted-foreground">
-                    Facturation ce mois
+                    This Month's Billing
                   </div>
-                  <div className="text-2xl font-bold">0,00 €</div>
+                  <div className="text-2xl font-bold">$0.00</div>
                 </div>
                 <div className="rounded-lg border p-3">
                   <div className="text-sm font-medium text-muted-foreground">
-                    Tickets support
+                    Support Tickets
                   </div>
                   <div className="text-2xl font-bold">0</div>
                 </div>
