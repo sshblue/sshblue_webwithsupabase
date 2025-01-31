@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "title": "Des serveurs performants à prix abordables",
+    "subtitle": "Hébergez vos applications avec des serveurs optimisés pour la performance et la sécurité.",
+    "startNow": "Commencer maintenant",
+    "seeOffers": "Voir nos offres"
+  },
+  "features": {
+    "robustInfra": {
+      "title": "Infrastructure Robuste",
+      "description": "Serveurs haute performance avec 99.9% de disponibilité"
+    },
+    "fastDeploy": {
+      "title": "Déploiement Rapide",
+      "description": "Mise en ligne en quelques minutes avec notre CLI"
+    },
+    "maxSecurity": {
+      "title": "Sécurité Maximale",
+      "description": "Chiffrement de bout en bout et protection DDoS"
+    }
+  },
+  "servers": {
+    "title": "Nos Serveurs",
+    "subtitle": "Choisissez le serveur qui correspond à vos besoins",
+    "included": {
+      "backup": "Backup inclus",
+      "ddos": "Anti-DDoS",
+      "support": "Support 24/7"
+    },
+    "order": "Commander",
+    "perMonth": "/mois"
+  },
+  "footer": {
+    "products": {
+      "title": "Produits",
+      "vps": "VPS",
+      "cloud": "Cloud",
+      "dedicated": "Serveurs Dédiés",
+      "custom": "Solutions sur mesure"
+    },
+    "support": {
+      "title": "Support",
+      "helpCenter": "Centre d'aide",
+      "documentation": "Documentation",
+      "status": "Status",
+      "contact": "Contact"
+    },
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "blog": "Blog",
+      "careers": "Carrières",
+      "partners": "Partenaires"
+    },
+    "legal": {
+      "title": "Légal",
+      "privacy": "Confidentialité",
+      "tos": "CGU",
+      "cgv": "CGV",
+      "legal": "Mentions légales"
+    },
+    "copyright": "© 2024 sshblue. all rights reserved."
+  }
+}
