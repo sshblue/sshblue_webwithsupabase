@@ -65,7 +65,7 @@ export default async function ProfilePage() {
             <CardHeader>
               <CardTitle>Account Statistics</CardTitle>
               <CardDescription>
-                Overview of your SSHBlue services usage.
+                Overview of your sshblue services usage.
               </CardDescription>
             </CardHeader>
             <CardContent>

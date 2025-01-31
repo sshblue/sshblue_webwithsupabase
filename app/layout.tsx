@@ -10,8 +10,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "SSHBlue - Serveurs VPS et Dédiés",
-  description: "Location de serveurs VPS, Cloud et Dédiés pour vos projets",
+  title: "sshblue",
+  description: "Secure Services & Hosting",
 }
 
 export default function RootLayout({

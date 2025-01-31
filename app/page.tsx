@@ -203,19 +203,19 @@ export default async function Home() {
                         </div>
                         <div className="flex items-center gap-2">
                           <Globe className="h-4 w-4 text-muted-foreground" />
-                          <span>{product.bandwidth_tb} TB/mois</span>
+                          <span>{product.bandwidth_tb} TB/month</span>
                         </div>
                       </div>
 
-                      <div className="flex gap-2 my-4">
-                        <Badge variant="outline" className="gap-1">
-                          <Server className="h-3 w-3" /> Backup inclus
+                      <div className="flex gap-1 my-4">
+                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
+                          <Server className="h-3 w-3" /> Backup included
                         </Badge>
-                        <Badge variant="outline" className="gap-1">
-                          <Shield className="h-3 w-3" /> Anti-DDoS
+                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
+                          <Shield className="h-3 w-3" /> DDoS Protection
                         </Badge>
-                        <Badge variant="outline" className="gap-1">
-                          <HeartPulse className="h-3 w-3" /> Support 24/7
+                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
+                          <HeartPulse className="h-3 w-3" /> 24/7 Support
                         </Badge>
                       </div>
 

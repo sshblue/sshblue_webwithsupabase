@@ -18,7 +18,7 @@ export default function TermsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              En accédant et en utilisant SSHBlue, vous acceptez d'être lié par ces conditions. 
+              En accédant et en utilisant sshblue, vous acceptez d'être lié par ces conditions. 
               Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser nos services.
             </p>
           </CardContent>
@@ -30,7 +30,7 @@ export default function TermsPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <p>
-              SSHBlue fournit des services d'hébergement de serveurs VPS et dédiés. 
+              sshblue fournit des services d'hébergement de serveurs VPS et dédiés. 
               Nos services incluent :
             </p>
             <ul className="list-disc pl-6 space-y-2">
