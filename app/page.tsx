@@ -62,13 +62,22 @@ export default async function Home() {
             </span>
           </Badge>
           
-          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            ssh<span className="text-primary">blue</span>
-          </h1>
+          <div className="relative">
+            <div className="absolute -inset-10 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-50 blur-[100px] -z-10 animate-pulse" />
+            <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl relative">
+              ssh<span className="text-primary relative">
+                <div className="absolute inset-0 bg-blue-500/50 blur-2xl -z-10" />
+                blue
+              </span>
+            </h1>
+          </div>
           
-          <p className="text-xl text-muted-foreground">
-            Secure Services & Hosting
-          </p>
+          <div className="relative">
+            <div className="absolute -inset-10 bg-blue-500/40 blur-[50px] -z-10 animate-pulse" />
+            <p className="text-xl text-muted-foreground relative backdrop-blur-sm">
+              Secure Services & Hosting
+            </p>
+          </div>
           
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
             The best solution for your server needs, powered by sshblue

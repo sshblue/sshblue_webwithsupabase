@@ -104,7 +104,7 @@ export function MainNav() {
           <DropdownMenuSeparator />
           <DropdownMenuLabel className="flex items-center gap-2">
             <Server className="w-4 h-4" />
-            Dedicated Servers
+            Dedicated
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <Link href="/products?type=dedicated-pro">

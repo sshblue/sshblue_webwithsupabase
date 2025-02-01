@@ -70,7 +70,7 @@ export default function ProductsPage() {
           <TabsList className="grid w-full max-w-[600px] grid-cols-3">
             <TabsTrigger value="vps">VPS Servers</TabsTrigger>
             <TabsTrigger value="cloud">Cloud</TabsTrigger>
-            <TabsTrigger value="dedicated">Dedicated Servers</TabsTrigger>
+            <TabsTrigger value="dedicated">Dedicated</TabsTrigger>
           </TabsList>
 
           {/* VPS */}

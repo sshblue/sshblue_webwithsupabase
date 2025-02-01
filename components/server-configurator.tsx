@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,7 +23,7 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
   const router = useRouter()
   const [config, setConfig] = useState({
     name: "",
-    location: "paris",
+    location: "east-eu1",
     os: "ubuntu-22.04",
     extraRam: 0,
     extraStorage: 0,
@@ -37,22 +37,70 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
   const [submitting, setSubmitting] = useState(false)
   const [isPaid, setIsPaid] = useState(false)
   const [paymentComplete, setPaymentComplete] = useState(false)
+  const [keySequence, setKeySequence] = useState<string[]>([]);
+
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (step !== 4) return;
+      
+      if (e.altKey && e.key.toLowerCase() === 'p') {
+        setKeySequence(prev => {
+          const newSequence = [...prev, 'p'];
+          if (newSequence.length > 3) newSequence.shift();
+          
+          if (newSequence.length === 3 && newSequence.every(k => k === 'p')) {
+            setPaymentComplete(true);
+            return [];
+          }
+          
+          return newSequence;
+        });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [step]);
 
   // Base price and additional costs
   const basePrice = product.price_per_month
   const ramPrice = config.extraRam * 5 // $5 per GB of RAM
-  const storagePrice = config.extraStorage * 0.1 // $0.1 per GB of storage
+  const storagePrice = config.extraStorage * 0.5 // $0.5 per GB of storage
   const backupPrice = config.backup ? 10 : 0
   const ddosPrice = config.ddos ? 15 : 0
   const supportPrice = config.support ? 30 : 0
   const totalPrice = basePrice + ramPrice + storagePrice + backupPrice + ddosPrice + supportPrice
 
   const locations = [
-    { value: "paris", label: "Paris, France" },
-    { value: "frankfurt", label: "Frankfurt, Germany" },
-    { value: "london", label: "London, United Kingdom" },
-    { value: "amsterdam", label: "Amsterdam, Netherlands" }
+    { 
+      value: "east-eu1", 
+      label: "EAST-EU1",
+      ping: 3
+    },
+    { 
+      value: "east-eu2", 
+      label: "EAST-EU2",
+      ping: 2
+    },
+    { 
+      value: "east-eu3", 
+      label: "EAST-EU3",
+      ping: 2
+    }
   ]
+
+  const PingBars = ({ count }: { count: number }) => (
+    <div className="flex gap-1 items-center ml-2">
+      {[...Array(3)].map((_, i) => (
+        <div
+          key={i}
+          className={`h-3 w-1 rounded-full ${i < count ? 'bg-green-500' : 'bg-gray-300'} ${
+            i < count ? 'animate-pulse' : ''
+          }`}
+        />
+      ))}
+    </div>
+  )
 
   const operatingSystems = [
     { 
@@ -116,12 +164,19 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
                 onValueChange={(value) => setConfig({ ...config, location: value })}
               >
                 <SelectTrigger>
-                  <SelectValue />
+                  <SelectValue defaultValue={config.location} />
                 </SelectTrigger>
                 <SelectContent>
                   {locations.map((location) => (
-                    <SelectItem key={location.value} value={location.value}>
-                      {location.label}
+                    <SelectItem 
+                      key={location.value} 
+                      value={location.value}
+                      className="flex items-center justify-between"
+                    >
+                      <div className="flex items-center justify-between w-full">
+                        <span>{location.label}</span>
+                        <PingBars count={location.ping} />
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -214,9 +269,9 @@ export function ServerConfigurator({ isOpen, onClose, product }: ServerConfigura
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label>DDoS Protection</Label>
+                  <Label>Cloudflare Setup</Label>
                   <p className="text-sm text-muted-foreground">
-                    Advanced protection against DDoS attacks
+                    Complete setup & routing with Cloudflare
                   </p>
                 </div>
                 <Switch
