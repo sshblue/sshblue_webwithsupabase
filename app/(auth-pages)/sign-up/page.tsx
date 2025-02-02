@@ -42,8 +42,6 @@ export default async function SignUp(props: { searchParams: Promise<Message> }) 
                   required
                   autoComplete="new-password"
                   className="w-full"
-                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                  title="The password must contain at least 8 characters, a letter and a digit"
                 />
               </div>
               <div className="flex flex-col gap-2">
