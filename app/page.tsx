@@ -97,9 +97,7 @@ export default async function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl -z-10" />
             <Link href="#servers">
               <ShinyButton 
-                size="default"
-                variant="outline"
-                className="backdrop-blur-sm bg-background/95 text-sm relative"
+                className="backdrop-blur-sm bg-background/95 text-sm relative px-4 py-2"
               >
                 View our offers
               </ShinyButton>
