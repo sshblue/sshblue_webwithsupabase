@@ -279,7 +279,7 @@ export default async function Home() {
           </p>
         </div>
         
-        <Marquee className="py-6" pauseOnHover speed={50}>
+        <Marquee className="py-6" pauseOnHover>
           <div className="flex gap-8 px-4">
             {[
               {
