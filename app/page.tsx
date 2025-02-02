@@ -15,6 +15,7 @@ import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button
 import { ShinyButton } from "@/components/ui/shiny-button"
 import { Terminal as NewTerminal, AnimatedSpan, TypingAnimation } from "@/components/ui/terminal"
 import { DotPattern } from "@/components/ui/dot-pattern"
+import { GlobeWrapper } from "@/components/globe-wrapper"
 
 const features = [
   {
@@ -90,7 +91,7 @@ export default async function Home() {
           </div>
           
           <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            The best solution for your server needs, powered by sshblue
+            The best solution for your server needs, powered by sshblue.
           </p>
           
           <div className="flex flex-col gap-2 min-[400px]:flex-row relative">
@@ -147,37 +148,21 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-accent/20">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                <Server className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Robust Infrastructure</h3>
-              <p className="text-muted-foreground">
-                High-performance servers with 99.9% uptime
-              </p>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                <Terminal className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Fast Deployment</h3>
-              <p className="text-muted-foreground">
-                Get started in minutes with our CLI
-              </p>
-            </div>
-            <div className="relative overflow-hidden rounded-lg border bg-background p-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 mb-4">
-                <Shield className="h-6 w-6 text-primary" />
-              </div>
-              <h3 className="text-xl font-bold mb-2">Maximum Security</h3>
-              <p className="text-muted-foreground">
-                End-to-end encryption and DDoS protection
-              </p>
-            </div>
+      {/* Globe Section */}
+      <section className="container space-y-6 py-8 md:py-12 lg:py-24">
+        <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
+          <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+            Global Infrastructure
+          </h2>
+          <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+            Experience lightning-fast response times no matter where your servers are hosted, thanks to our relay network spread across the globe.
+          </p>
+        </div>
+
+        <div className="relative mx-auto flex justify-center items-center min-h-[600px]">
+          <div className="w-[600px] h-[600px] relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 blur-[100px] -z-10" />
+            <GlobeWrapper />
           </div>
         </div>
       </section>
