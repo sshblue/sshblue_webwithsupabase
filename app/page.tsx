@@ -96,7 +96,7 @@ export default async function Home() {
           
           <div className="flex flex-col gap-2 min-[400px]:flex-row relative">
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl -z-10" />
-            <Link href="#servers">
+            <Link href="/products">
               <ShinyButton 
                 className="backdrop-blur-sm bg-background/95 text-sm relative px-4 py-2"
               >
@@ -164,92 +164,6 @@ export default async function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/30 via-purple-500/30 to-pink-500/30 blur-[100px] -z-10" />
             <GlobeWrapper />
           </div>
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section id="servers" className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center justify-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
-                Our Servers
-              </h2>
-              <p className="max-w-[900px] text-muted-foreground md:text-xl">
-                Choose the server that fits your needs
-              </p>
-            </div>
-          </div>
-
-          <Tabs defaultValue="VPS" className="mt-8">
-            <TabsList className="grid w-full grid-cols-3">
-              {serverTypes.map((type) => (
-                <TabsTrigger key={type} value={type}>
-                  {type}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            {serverTypes.map((type) => (
-              <TabsContent key={type} value={type}>
-                <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
-                  {products?.filter(p => p.server_type === type).map((product) => (
-                    <Card key={product.id} className="flex flex-col p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h3 className="text-2xl font-bold">{product.name}</h3>
-                          <p className="text-sm text-muted-foreground">{product.description}</p>
-                        </div>
-                        <Badge variant="secondary">{product.server_type}</Badge>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4 my-4">
-                        <div className="flex items-center gap-2">
-                          <Cpu className="h-4 w-4 text-muted-foreground" />
-                          <span>{product.cpu_cores} vCPU</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Gauge className="h-4 w-4 text-muted-foreground" />
-                          <span>{product.ram_gb} Go RAM</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <HardDrive className="h-4 w-4 text-muted-foreground" />
-                          <span>{product.storage_gb} Go SSD</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Globe className="h-4 w-4 text-muted-foreground" />
-                          <span>{product.bandwidth_tb} TB/month</span>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-1 my-4">
-                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
-                          <Server className="h-3 w-3" /> Backup included
-                        </Badge>
-                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
-                          <Shield className="h-3 w-3" /> DDoS Protection
-                        </Badge>
-                        <Badge variant="outline" className="gap-1 text-xs px-2 py-0">
-                          <HeartPulse className="h-3 w-3" /> 24/7 Support
-                        </Badge>
-                      </div>
-
-                      <div className="mt-auto pt-4 border-t">
-                        <div className="flex items-center justify-between mb-4">
-                          <div>
-                            <span className="text-3xl font-bold">{product.price_per_month}€</span>
-                            <span className="text-muted-foreground">/month</span>
-                          </div>
-                          <Link href="/sign-up">
-                            <Button>Order</Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
         </div>
       </section>
 
