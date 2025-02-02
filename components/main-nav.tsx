@@ -29,7 +29,9 @@ import {
   LifeBuoy,
   BookOpen,
   HelpCircle,
-  Home
+  Home,
+  FileText,
+  Lock
 } from "lucide-react"
 import { createClient } from "@/utils/supabase/client"
 import { useEffect, useState } from "react"
@@ -149,6 +151,29 @@ export function MainNav() {
                 <span>Technical Support</span>
                 <span className="text-xs text-muted-foreground">
                   24/7 assistance for your servers
+                </span>
+              </div>
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
+          <Link href="/terms">
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+              <FileText className="w-4 h-4" />
+              <div className="flex flex-col">
+                <span>Terms of Service</span>
+                <span className="text-xs text-muted-foreground">
+                  Our service terms and conditions
+                </span>
+              </div>
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/privacy">
+            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
+              <Lock className="w-4 h-4" />
+              <div className="flex flex-col">
+                <span>Privacy Policy</span>
+                <span className="text-xs text-muted-foreground">
+                  How we handle your data
                 </span>
               </div>
             </DropdownMenuItem>
