@@ -14,7 +14,7 @@ export default async function SignUp(props: { searchParams: Promise<Message> }) 
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
           <CardDescription>
-            Enter your details to create your SSHBlue account
+            Enter your details to create your sshblue account
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -10,6 +10,11 @@ import React from "react"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Cpu, HardDrive, Gauge, Globe, HeartPulse } from "lucide-react"
+import { Marquee } from "@/components/ui/marquee"
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button"
+import { ShinyButton } from "@/components/ui/shiny-button"
+import { Terminal as NewTerminal, AnimatedSpan, TypingAnimation } from "@/components/ui/terminal"
+import { DotPattern } from "@/components/ui/dot-pattern"
 
 const features = [
   {
@@ -53,9 +58,14 @@ export default async function Home() {
   return (
     <div className="flex-1">
       {/* Hero Section */}
-      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32">
-        <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-          <Badge className="rounded-lg px-3 py-1" variant="secondary">
+      <section className="space-y-6 pb-8 pt-6 md:pb-12 md:pt-10 lg:py-32 relative overflow-hidden">
+        <DotPattern 
+          className="absolute inset-0 opacity-20 dark:opacity-30" 
+          width={32} 
+          height={32} 
+        />
+        <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center relative">
+          <Badge className="rounded-lg px-3 py-1 relative bg-background/95 backdrop-blur-sm shadow-lg">
             <span className="flex items-center gap-2">
               <Code2 className="h-3 w-3" />
               <span className="text-sm">New: Support for Python 3.12</span>
@@ -83,16 +93,16 @@ export default async function Home() {
             The best solution for your server needs, powered by sshblue
           </p>
           
-          <div className="flex flex-col gap-2 min-[400px]:flex-row">
-            <Link href="/sign-up">
-              <Button size="lg" className="bg-white text-black hover:bg-white/90">
-                Get started now
-              </Button>
-            </Link>
+          <div className="flex flex-col gap-2 min-[400px]:flex-row relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 blur-3xl -z-10" />
             <Link href="#servers">
-              <Button variant="outline" size="lg">
+              <ShinyButton 
+                size="default"
+                variant="outline"
+                className="backdrop-blur-sm bg-background/95 text-sm relative"
+              >
                 View our offers
-              </Button>
+              </ShinyButton>
             </Link>
           </div>
         </div>
@@ -105,25 +115,37 @@ export default async function Home() {
             <h2 className="text-3xl font-bold tracking-tighter">
               Deploy with 1 command in your terminal
             </h2>
-            <div className="w-full max-w-2xl rounded-lg border bg-muted/50 p-2">
-              <div className="flex items-center gap-2 border-b px-4 py-2">
-                <div className="flex gap-2">
-                  <div className="h-3 w-3 rounded-full bg-red-500" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-500" />
-                  <div className="h-3 w-3 rounded-full bg-green-500" />
+            <NewTerminal className="w-full max-w-2xl">
+              <div className="space-y-4 font-mono text-sm">
+                <div>
+                  <span className="text-red-400"># Install our CLI</span>
+                  <br />
+                  <TypingAnimation delay={1000} duration={50}>
+                    npm install -g sshblue-cli
+                  </TypingAnimation>
                 </div>
-                <div className="flex-1 text-sm font-medium">Terminal</div>
-                <CopyButton content={deployCommands.join("\n")} />
+
+                <div>
+                  <span className="text-red-400"># Log in to your account</span>
+                  <br />
+                  <TypingAnimation delay={2500} duration={50}>
+                    sshblue login
+                  </TypingAnimation>
+                </div>
+
+                <div>
+                  <span className="text-red-400"># Deploy your first server</span>
+                  <br />
+                  <TypingAnimation delay={4000} duration={50}>
+                    sshblue deploy --type vps --region eu-west
+                  </TypingAnimation>
+                  <br /> <br />
+                  <AnimatedSpan delay={5500} className="text-green-500">
+                    ✓ Server deployed successfully!
+                  </AnimatedSpan>
+                </div>
               </div>
-              <div className="p-4 space-y-4">
-                {deployCommands.map((line, i) => (
-                  <div key={i} className="font-mono text-sm">
-                    {line === "" ? <br /> : line}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+            </NewTerminal>          </div>
         </div>
       </section>
 
@@ -246,6 +268,62 @@ export default async function Home() {
             ))}
           </Tabs>
         </div>
+      </section>
+
+      {/* Customer Reviews */}
+      <section className="py-12 bg-accent/10">
+        <div className="container mb-8 text-center">
+          <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
+            What Our Customers Say
+          </h2>
+          <p className="mt-2 text-muted-foreground">
+            Join hundreds of satisfied developers and businesses
+          </p>
+        </div>
+        
+        <Marquee className="py-6" pauseOnHover speed={50}>
+          <div className="flex gap-8 px-4">
+            {[
+              {
+                text: "Tested many servers. Blazing fast!",
+                author: "Geraven",
+                role: "Independent Dev"
+              },
+              {
+                text: "With 100 sites, uptime is key. Always reliable.",
+                author: "jennya_sys",
+                role: "Website Admin"
+              },
+              {
+                text: "Quick, smart support. They deliver every time.",
+                author: "hakuyahama",
+                role: "System Admin"
+              },
+              {
+                text: "Auto deployment is a game changer. Efficient and simple.",
+                author: "Reborn03",
+                role: "Freelance Dev"
+              },
+              {
+                text: "Rock-solid security and fast network. Top-tier choice!",
+                author: "xoCamy",
+                role: "Security Admin"
+              }
+              
+            ].map((review, i) => (
+              <div
+                key={i}
+                className="flex flex-col gap-4 p-6 min-w-[300px] bg-background rounded-xl shadow-sm"
+              >
+                <p className="text-sm text-muted-foreground italic">"{review.text}"</p>
+                <div>
+                  <p className="font-semibold">{review.author}</p>
+                  <p className="text-sm text-muted-foreground">{review.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Marquee>
       </section>
 
       {/* Footer */}
