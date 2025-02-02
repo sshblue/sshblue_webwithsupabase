@@ -69,7 +69,7 @@ export default async function Home() {
           <Badge className="rounded-lg px-3 py-1 relative bg-background/95 backdrop-blur-sm shadow-lg">
             <span className="flex items-center gap-2">
               <Code2 className="h-3 w-3" />
-              <span className="text-sm">New: Support for Python 3.12</span>
+              <span className="text-sm">New: Discover our new CLI</span>
             </span>
           </Badge>
           
